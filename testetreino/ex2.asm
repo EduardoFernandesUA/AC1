@@ -28,9 +28,9 @@ do:									# do {
 	sw		$a2,0($a0)				#	val[i] = val[i+SIZE/2];
 	sw		$t1,0($a1)				#   val[i+SIZE/2] = v;
 	
-	addi	$t0,$t0,4
+	addi	$t0,$t0,4				# 	i++;
 	
-	bge		$t0,16,enddowhile
+	bge		$t0,16,enddowhile		# } while( i < SIZE/2);
 	j		do
 enddowhile:	
 	
@@ -44,16 +44,16 @@ doprint:							# do {
 	add		$a0,$t2,$t0
 	lw		$a0,0($a0)
 	li		$v0,print_int10
-	syscall
+	syscall							# print_int10(val[i]);
 	
 	addi	$t0,$t0,4				# i++;
 	
 	li		$a0,','
-	li		$v0,print_char
+	li		$v0,print_char			# print_char(',');
 	syscall
 	
 	li		$a0,SIZE
 	mul		$a0,$a0,4
-	blt		$t0,$a0,doprint		
+	blt		$t0,$a0,doprint			# } while( i < SIZE);
 			
 	jr $ra
