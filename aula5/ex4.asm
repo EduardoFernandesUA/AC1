@@ -9,14 +9,14 @@
 #  t7 - aux
 
 	.data
-	.eqv	SIZE,4
+	.eqv	SIZE,10
 	.eqv	FALSE,0
 	.eqv	TRUE,1
 str1:	.asciiz	"\nIntroduza numero: "
 str2:	.asciiz	"\nConteudo do array: "
 str3:	.asciiz	", "
 	.align	2
-lista:	.space	16
+lista:	.space	40
 	.eqv	read_int,5
 	.eqv	print_string,4
 	.eqv	print_int10,1
@@ -38,6 +38,7 @@ readw:	bgeu	$t5,$t6,ereadw	# while( p < pUltimo ) {
 	addiu	$t5,$t5,4	#   p++;
 	j	readw   	# }
 ereadw:
+	la	$t5,lista
 	li	$t6,SIZE	# $t6 = SIZE
 	sll	$t6,$t6,2	# $t6 = SIZE * 4
 	addu	$t6,$t5,$t6	# $t6 = lista + SIZE * 4
@@ -59,7 +60,24 @@ endfor:
 	bne	$t4,TRUE,enddo	# } while( houve_troca == TRUE );
 	j	do
 enddo:
-	# adicionar código para printar lista
+	la	$a0,str2
+	li	$v0,print_string
+	syscall			# print_string(str2);
+	la	$t5,lista
+	li	$t6,SIZE	# $t6 = SIZE
+	sll	$t6,$t6,2	# $t6 = SIZE * 4
+	addu	$t6,$t5,$t6	# $t6 = lista + SIZE * 4
+printw:
+	bgeu	$t5,$t6,eprintw	# while( p < pUltimo ) {
+	lw	$a0,0($t5)	#   $a0 = *p
+	li	$v0,print_int10
+	syscall			#   print_int10(*p);
+	la	$a0,str3
+	li	$v0,print_string
+	syscall			#   print_string(", ");
+	addiu	$t5,$t5,4	#   p++;
+	j	printw		# }
+eprintw:
 	jr	$ra
 	
 	
