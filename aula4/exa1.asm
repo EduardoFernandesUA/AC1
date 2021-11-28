@@ -20,8 +20,11 @@ main:
 	la	$t0,str		# p = str;
 while:	lb	$t1,0($t0)	# $t1 = *p
 	beq	$t1,'\0',endw	# while( *p != '\0' ){
+if:	blt	$t1,'a',endif	#   if( *p >= 'a' ||
+	bgt	$t1,'z',endif	#       *p <= 'z' ){
 	sub	$t1,$t1,0x20	#
-	sb	$t1,0($t0)	#   *p = *p - 'a' + 'A'; // 'a'-'A' = 0x20
+	sb	$t1,0($t0)	#     *p = *p - 'a' + 'A'; // 'a'-'A' = 0x20
+endif:				#   }
 	addiu	$t0,$t0,1	#   p++;
 	j	while		# }
 endw:
