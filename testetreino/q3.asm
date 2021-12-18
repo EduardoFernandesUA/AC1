@@ -12,7 +12,7 @@
 	.eqv	read_int,5
 	.eqv	N,5
 a:	.space	20
-c:	.space	20
+b:	.space	20
 	.text
 	.globl main
 main:
@@ -30,7 +30,7 @@ for1:	bge	$t2,$t4,efor1
 	j	for1
 efor1:	
 	la	$t2,a
-	la	$t3,c
+	la	$t3,b
 for2:	bge	$t2,$t4,efor2
 	lw	$t5,0($t2)
 	rem	$t7,$t5,2
@@ -45,7 +45,7 @@ endif:
 	addiu	$t2,$t2,4
 	j	for2
 efor2:
-	la	$t3,c
+	la	$t3,b
 	sll	$t4,$t1,2
 	addu	$t4,$t4,$t3
 for3:	bge	$t3,$t4,efor3
